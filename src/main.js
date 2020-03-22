@@ -19,6 +19,18 @@ Vue.config.productionTip = false
 //注册element
 Vue.use(Element)
 
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  render: h => h(App),
+  router,
+  // 注意这里
+  store,
+  components: {App},
+  template: '<App/>'
+})
+
+
 router.beforeEach((to, from, next) => {
     if (to.meta.requireAuth) {
       if (store.state.user.username) {
@@ -34,13 +46,3 @@ router.beforeEach((to, from, next) => {
     }
   }
 )
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  render: h => h(App),
-  router,
-  // 注意这里
-  store,
-  components: {App},
-  template: '<App/>'
-})

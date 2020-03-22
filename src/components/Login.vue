@@ -32,7 +32,7 @@
       }
     },
     methods: {
-      login () {
+      login() {
         var _this = this
         console.log(this.$store.state)
         this.$axios
