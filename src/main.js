@@ -11,8 +11,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 //1.需要在控制台安装axios模块  cnpm install --save axios
 // 设置反向代理，前端请求默认发送到 http://localhost:8443/api
 var axios = require('axios')
-axios.defaults.baseURL = 'http://localhost:8443/api'
 // 全局注册，之后可在其他组件中通过 this.$axios 发送数据
+axios.defaults.baseURL = 'http://localhost:8443/api'
+//前端带上 cookie
+axios.defaults.withCredentials = true
 Vue.prototype.$axios = axios
 
 Vue.config.productionTip = false
@@ -32,17 +34,19 @@ new Vue({
 
 
 router.beforeEach((to, from, next) => {
-    if (to.meta.requireAuth) {
-      if (store.state.user.username) {
-        next()
-      } else {
-        next({
-          path: 'login',
-          query: {redirect: to.fullPath}
-        })
-      }
+  if (to.meta.requireAuth) {
+    if (store.state.user.username) {
+      axios.get('/authentication').then(resp => {
+        if (resp) next()
+      })
     } else {
-      next()
+      next({
+        path: 'login',
+        query: {redirect: to.fullPath}
+      })
+    }
+  } else {
+    next()
     }
   }
 )

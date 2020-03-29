@@ -26,7 +26,7 @@
       return {
         loginForm: {
           username: 'mcmc',
-          password: '789'
+          password: '123456'
         },
         responseResult: []
       }
